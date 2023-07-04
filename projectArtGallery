@@ -1,0 +1,148 @@
+
+create table ArtGallery(Gid int not null primary Key  , GName varchar(20)not null,CommunicationAccount varchar(30) not null ,HourOfWork time not null
+,location varchar(20) not null,Space_reservation_price money not null 
+,ReservedSpaces int check(ReservedSpaces <=50) not null,AvailableSpaces int not null)
+
+INSERT INTO ArtGallery VALUES ( 1234,'Madina Art Center','@madinaartcenter','5:00','King Fahd Park',2000,8,42)
+
+
+
+create table Employee(Eid int primary Key not null ,FirstName varchar(30) not null,MiddleName Varchar(30) NOT NULL,LastName Varchar(30) NOT NULL
+, Email varchar(30) not null,phone_number varchar(30) not null,salary money not null,Type_of_jop varchar(30) not null
+,Gender varchar(10) not null,Age int not null,Gid int not null foreign key references ArtGallery(Gid))
+
+INSERT INTO Employee VALUES (12,'Mohammed', 'Fahad' , 'Alharbi' ,'mohammed21@gmail.com','0502004857',5000,'Trainer' ,'male',25,1234)
+INSERT INTO Employee VALUES (13,'Lujain', 'Abdulah' , 'Alharbi' ,'Lujain32@gmail.com','0503002987',5000,'Trainer' ,'female',22,1234)
+INSERT INTO Employee VALUES (14,'Ahmed','Adel','Alharbi' ,'Ahamed33@gmail.com','0503003337',5000,'HR' ,'male',28,1234)
+INSERT INTO Employee VALUES (15,'Salman','Mohamed','Alhrbi' ,'salman3@gmail.com','0503595937',2000,'Security guard' ,'male',24,1234)
+INSERT INTO Employee VALUES (16,'sna', 'Abdulaziz' , 'Alharbi' ,'sna32@gmail.com','0503003030',3000,'Technician' ,'female',27,1234)
+
+
+
+create table Trainer(Eid int not null foreign key references Employee(Eid), Art_type varchar(30) not null)
+
+INSERT INTO Trainer VALUES (13,'Digital art')
+INSERT INTO Trainer VALUES (12,'Abstract art')
+
+
+
+create table Intern(Iid int not null primary Key ,FirstName varchar(30) not null,MiddleName Varchar(30) NOT NULL,LastName Varchar(30) NOT NULL
+, Email varchar(30) not null,phone_number varchar(30) not null,Age int not null,Enroll_Course varchar(30) not null
+,Membership_Status varchar(30) not null,Eid int not null foreign key references Employee(Eid))
+
+INSERT INTO Intern VALUES (17,'Wafa','Nabil','Alharbi','wafa66@gmail.com','0508009989',20,'Digital art' ,'current',13)
+INSERT INTO Intern VALUES (18,'Shahad','Ahamed','Alsaif','shahadal@gmail.com','0505678987',19,'Digital art' ,'current',13)
+INSERT INTO Intern VALUES (19,'Ahad','Omar','Alsaif','ahad44@gmail.com','0504567787',22,'Abstract art' ,'current',12)
+INSERT INTO Intern VALUES (20,'Ahmed','Omar','Aljuhani','ahamd@gmail.com','0506789887',23,'Abstract art' ,'not current',12)
+
+
+
+create table Course (Cid int not null primary Key , CName varchar(30) not null,Number_of_intern int not null check(Number_of_intern<=30)
+,Date_begin DateTime not null,Date_end DateTime not null, CDescription text not null, price money not null )
+
+
+INSERT INTO Course VALUES (66,'Abstract art',20,'2023-05-1 5:00:00 ','2023-05-30 10:00:00 ','In this course we will be creating 2 colorful large modern abstract paintings
+I will cover the usage of unconventional tools and materials to add interest and excitement to your masterpiece.',1000)
+INSERT INTO Course VALUES (67,'Digital art',20,'2023-05-1 5:00:00','2023-05-30 10:00:00 ','This course will take you from having little knowledge in digital painting and
+drawing to creating advanced art and having a deep understanding of drawing fundamentals.',3000)
+
+
+
+create table ArtisticalWork(Aid int not null primary Key  ,Artist_Fname varchar(30) not null,Artist_Lname varchar(30) not null,
+Name_of_art varchar(30) not null,Gid int not null foreign key references ArtGallery(Gid))
+
+
+INSERT INTO  ArtisticalWork VALUES (30,'Ahamad','Khaled','The sky',1234)
+INSERT INTO  ArtisticalWork VALUES (31,'Ahamad','Mohammad','The Earth',1234)
+INSERT INTO  ArtisticalWork VALUES (32,'Amal','Mohammad','Rose ',1234)
+INSERT INTO  ArtisticalWork VALUES (33,'Taif','Abdullah','Tulip ',1234)
+INSERT INTO  ArtisticalWork VALUES (34,'saleh','Alnegedan','Alsayl ',1234)
+INSERT INTO  ArtisticalWork VALUES (35,'Bartolome','Murillo','The little fruitseller ',1234)
+INSERT INTO  ArtisticalWork VALUES (36,'Paul','gauguin','Winter landscape ',1234)
+INSERT INTO  ArtisticalWork VALUES (37,'Vincent','van Gogh ','The Starry Night ',1234)
+INSERT INTO  ArtisticalWork VALUES (38,'Vincent','van Gogh ','Irises ',1234)
+
+
+
+create table Customer(C_id int not null primary Key , Customer_Fname varchar(30) not null,Customer_Lname varchar(30) not null
+,phone_number varchar(30) not null ,payment_status varchar(30) not null  )
+
+
+INSERT INTO  Customer VALUES (40,'Khaled','Alharbi ','0507898765','Done')
+INSERT INTO  Customer VALUES (41,'Lama' ,'Alharbi ','0506997878','Not Done ')
+INSERT INTO  Customer VALUES (42,'Mona','Alharbi','0507008989','Done')
+INSERT INTO  Customer VALUES (43,'khaled','Alharbi','0507008998','Done')
+INSERT INTO  Customer VALUES (44,'Mohammed','Alharbi','0503877788','Not Done')
+
+
+
+create table Teaches(Eid int not null foreign key references Employee(Eid),Cid int not null foreign key references Course(Cid) )
+
+INSERT INTO  Teaches VALUES (13,67)
+INSERT INTO  Teaches VALUES (12,66)
+
+
+
+create table Joins (Iid int not null foreign key references Intern(Iid),Cid int not null foreign key references Course(Cid) )
+
+INSERT INTO  Joins VALUES (17,67)
+INSERT INTO  Joins VALUES (18,67)
+INSERT INTO  Joins VALUES (19,66)
+INSERT INTO  Joins VALUES (20,66)
+
+
+
+create table Purchase(C_id int not null foreign key references Customer(C_id), Gid int not null foreign key references ArtGallery(Gid))
+
+INSERT INTO  Purchase VALUES (40,1234)
+INSERT INTO  Purchase VALUES (41,1234)
+INSERT INTO  Purchase VALUES (42,1234)
+INSERT INTO  Purchase VALUES (43,1234)
+INSERT INTO  Purchase VALUES (44,1234)
+
+
+
+
+
+/*Targeted Queries:*/
+
+SELECT*FROM  Customer
+
+/*List the details of art gallery*/
+SELECT*FROM ArtGallery
+
+/*List the details of employees*/
+SELECT*FROM Employee
+
+/*List the details of interns*/
+SELECT*FROM Intern
+
+/*List the details of courses*/
+SELECT*FROM Course
+
+/*List the details of trainers*/
+SELECT*FROM Trainer
+
+/*List the details of artistical work*/
+SELECT*FROM ArtisticalWork
+
+/*List the details of customer*/
+SELECT*FROM  Customer
+
+/*List the details of of number of interns*/
+SELECT Number_of_intern FROM Course 
+/*List the details of of number of interns and name for each course*/
+SELECT Number_of_intern, CName FROM Course 
+/*List the details of number of available spaces*/
+SELECT AvailableSpaces FROM ArtGallery
+/*List the details of date of course begins and date of course end*/
+SELECT CName, Date_begin,Date_end FROM Course
+/*List the details of membership status*/
+SELECT Iid,FirstName,Lastname,Membership_Status FROM Intern
+/*List the details of information trainers*/
+SELECT Trainer.Eid,Art_type, Employee.Type_of_jop , Employee.FirstName,MiddleName, Employee.LastName,phone_number,salary,Gender,Email
+FROM Trainer,Employee where Employee.Eid= Trainer.Eid
+/*List the details of Trainer supervises on Intern*/
+SELECT Employee.FirstName AS 'Trainer',Intern.FirstName AS'Intern' FROM Employee JOIN Intern ON Employee.Eid= Intern.Eid 
+
+
